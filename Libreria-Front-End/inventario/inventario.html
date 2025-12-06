@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conexión Escrita — Inventario</title>
+  <link rel="stylesheet" href="/assets/css/estilo.css" />
+</head>
+
+<body class="page-inventario">
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Inventario</h2>
+        <span class="muted small">Conexión Escrita</span>
+      </div>
+      <nav class="nav">
+        <a href="/pages/admin/admin.html">Dashboard</a>
+        <a href="/inventario/inventario.html" class="active">Inventario</a>
+        <a href="/usuarios/crear_usuario.html">Usuarios</a>
+        <a href="/materias_primas/materias_primas.html">Materias Primas</a>
+        <a href="/puntos_ventas/puntos_venta.html">Puntos de venta</a>
+        <a href="/libros/libros.html">Libros</a>
+        <a href="/../../index.html" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+
+      <!-- 🔎 Filtro y selección de PV -->
+      <div class="panel-row">
+        <h3>Filtro / Búsqueda</h3>
+
+        <form id="filterForm" class="form-inline">
+          <select id="selectPV">
+            <option value="">Inventario Global</option>
+          </select>
+
+          <input name="q" placeholder="Buscar libro...">
+          <button class="btn">Buscar</button>
+        </form>
+      </div>
+
+      <!-- 📋 Tabla de inventario -->
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID Inv.</th>
+              <th>Libro</th>
+              <th>Punto de Venta</th>
+              <th>Stock</th>
+              <th>Stock Mínimo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody id="tabla-libros">
+            <tr><td colspan="6">Cargando inventario...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel-row">
+        <button class="btn primary">Cargar más</button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ⭐ Panel para agregar libros a un PV -->
+  <div id="panelAgregarPV" style="display:none; margin-top:20px;">
+    <button class="btn primary" onclick="abrirModalAgregar()">+ Agregar libro a este PV</button>
+  </div>
+
+  <!-- ⭐ Modal de agregar -->
+  <div id="modalAgregar" class="modal hidden">
+    <div class="modal-content">
+      <h3>Agregar libro al punto de venta</h3>
+
+      <label>Libro:</label>
+      <select id="libroSelect"></select>
+
+      <label>Stock inicial:</label>
+      <input type="number" id="stockInicial" min="0" />
+
+      <label>Stock mínimo:</label>
+      <input type="number" id="stockMinimo" min="0" value="5" />
+
+      <div class="modal-actions">
+        <button class="btn" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn primary" onclick="confirmarAgregar()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⭐⭐ MODAL PARA EDITAR STOCK ⭐⭐ -->
+  <div id="modalEditar" class="modal hidden">
+    <div class="modal-content" style="width:380px;">
+
+      <h3>Editar Stock</h3>
+
+      <p><b id="editLibroNombre"></b></p>
+
+      <label>Stock actual:</label>
+      <input id="editStockActual" type="number" disabled />
+
+      <label>Nuevo stock:</label>
+      <input id="editStockNuevo" type="number" min="0" />
+
+      <label>Diferencia:</label>
+      <input id="editDiferencia" type="number" disabled />
+
+      <label>Uso de materia prima (páginas):</label>
+      <input id="editMP" type="number" disabled />
+
+      <div class="modal-actions">
+        <button class="btn ghost" onclick="cerrarModalEditar()">Cancelar</button>
+        <button class="btn primary" onclick="guardarEdicion()">Guardar</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Estilos de modal -->
+  <style>
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: none; /* será mostrado con .hidden */
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    .modal:not(.hidden) { display: flex; }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 350px;
+    }
+  </style>
+
+  <footer class="site-footer container">
+    <small class="muted">Gestiona stock, ventas y entradas. Los permisos dependen de tu rol.</small>
+  </footer>
+
+  <script>
+    function logout() {
+      localStorage.clear();
+      window.location.href = "/index.html";
+    }
+
+    (function protegerRuta() {
+      const rol = localStorage.getItem("userRole");
+      if (!rol) window.location.href = "/index.html";
+    })();
+  </script>
+
+  <script src="/inventario/inventario.js"></script>
+
+</body>
+</html>

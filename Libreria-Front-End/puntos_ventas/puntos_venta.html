@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conexión Escrita — Gestión de Puntos de Venta</title>
+  <link rel="stylesheet" href="/assets/css/estilo.css" />
+</head>
+<body class="page-dashboard">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Conexión Escrita</h2>
+        <span class="muted small">Administrador</span>
+      </div>
+      <nav class="nav">
+        <a href="/pages/admin/admin.html">Dashboard</a>
+        <a href="/inventario/inventario.html">Inventario</a>
+        <a href="/usuarios/crear_usuario.html">Usuarios</a>
+        <a href="/materias_primas/materias_primas.html">Materias Primas</a>
+        <a href="/puntos_ventas/puntos_venta.html" class="active">Puntos de venta</a>
+        <a href="/libros/libros.html">Libros</a>
+        <a href="/../../index.html" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="panel-row">
+        <h3>Lista de Puntos de Venta</h3>
+        <form id="filterFormPV" class="form-inline" method="GET" action="/puntos-venta">
+          <input name="q" placeholder="Buscar por nombre o ubicación" />
+          <button class="btn">Buscar</button>
+          <button type="button" class="btn primary" onclick="location.href='crear_punto_venta.html'">
+            + Nuevo Punto de Venta
+          </button>
+        </form>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Ubicación</th>
+              <th>Tipo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-puntos-venta">
+            <tr><td colspan='5'>Cargando puntos de venta...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+<main class="container">
+    </main>
+
+<div id="modalEditarPV" class="modal hidden">
+    <div class="modal-content">
+      <h3>Editar Punto de Venta</h3>
+
+      <form id="formEditarPV" class="form-stack">
+        <input type="hidden" id="editar-pv-id" />
+
+        <label class="form-label">
+          <span>Nombre</span>
+          <input name="nombre" id="editar-pv-nombre" required />
+        </label>
+
+        <label class="form-label">
+          <span>Ubicación</span>
+          <input name="ubicacion" id="editar-pv-ubicacion" required />
+        </label>
+
+        <label class="form-label">
+          <span>Tipo</span>
+          <select name="tipo" id="editar-pv-tipo" required>
+            <option value="tienda">Tienda</option>
+            <option value="metro">Metro</option>
+            <option value="online">Online</option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Guardar Cambios</button>
+          <button type="button" class="btn ghost" onclick="cerrarModalEditarPV()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+</div>
+
+
+  <footer class="site-footer container">
+    <small class="muted">Conexión Escrita — Gestión de Puntos de Venta</small>
+  </footer>
+<script>
+  function logout() {
+    localStorage.removeItem("userRole");
+    window.location.href = "index.html";
+  }
+
+  // Proteger esta ruta: solo para admin
+  (function protegerRuta() {
+    const rol = localStorage.getItem("userRole");
+    if (rol !== "admin") {
+      window.location.href = "index.html";
+    }
+  })();
+</script>
+<script src="puntos_venta.js"></script>
+</body>
+</html>

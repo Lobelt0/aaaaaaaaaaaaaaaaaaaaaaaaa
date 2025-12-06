@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Conexión Escrita — Gestión de Materias Primas</title>
+  <link rel="stylesheet" href="/assets/css/estilo.css" />
+</head>
+<body class="page-dashboard">
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="logo">
+        <h2>Conexión Escrita</h2>
+        <span class="muted small">Administrador</span>
+      </div>
+      <nav class="nav">
+        <a href="/pages/admin/admin.html">Dashboard</a>
+        <a href="/inventario/inventario.html">Inventario</a>
+        <a href="/usuarios/crear_usuario.html">Usuarios</a>
+        <a href="/materias_primas/materias_primas.html" class="active">Materias Primas</a>
+        <a href="/puntos_ventas/puntos_venta.html">Puntos de venta</a>
+        <a href="/libros/libros.html">Libros</a>
+        <a href="/../../index.html" class="btn-sm ghost" onclick="logout()">Salir</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="panel-row">
+        <h3>Stock de Materias Primas</h3>
+        <form id="filterFormMP" class="form-inline" method="GET" action="/materias_primas">
+          <input name="q" placeholder="Buscar por nombre o tipo" />
+          <button class="btn">Buscar</button>
+          <button type="button" class="btn primary" onclick="abrirModalEntrada()">+ Registrar Entrada</button>
+          <button type="button" class="btn ghost" onclick="abrirModalCrearMP()">+ Nueva Materia Prima</button>
+        </form>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Stock</th>
+              <th>Stock Mínimo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-materias-primas">
+            <tr><td colspan='5'>Cargando materias primas... (Requiere API)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <small class="muted">Conexión Escrita — Gestión de Materias Primas</small>
+  </footer>
+
+  <!-- Modal Registrar Entrada -->
+  <div id="modal-entrada" class="modal hidden">
+    <div class="modal-content">
+      <h3 class="panel-title">Registrar Entrada</h3>
+      <form id="form-entrada" class="form-stack">
+        <div class="form-group">
+          <label for="entrada-mp">Materia Prima</label>
+          <select id="entrada-mp" class="input-styled"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="entrada-cantidad">Cantidad</label>
+          <input type="number" id="entrada-cantidad" class="input-styled" required />
+        </div>
+
+        <div class="form-group">
+          <label for="entrada-observaciones">Observaciones</label>
+          <textarea id="entrada-observaciones" class="input-styled" rows="3"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary"> Registrar</button>
+          <button type="button" class="btn ghost" onclick="cerrarModalEntrada()"> Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Ajustar Materia Prima -->
+  <div id="modal-ajuste" class="modal hidden">
+    <div class="modal-content">
+      <h3 class="panel-title"> Ajustar Materia Prima</h3>
+      <form id="form-ajuste" class="form-stack">
+        <input type="hidden" id="ajuste-id" />
+
+        <div class="form-group">
+          <label for="ajuste-nombre">Nombre</label>
+          <input type="text" id="ajuste-nombre" class="input-styled" required />
+        </div>
+
+        <div class="form-group">
+          <label for="ajuste-unidad">Unidad</label>
+          <input type="text" id="ajuste-unidad" class="input-styled" required />
+        </div>
+
+        <div class="form-group">
+          <label for="ajuste-minimo">Stock mínimo</label>
+          <input type="number" id="ajuste-minimo" class="input-styled" required />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary"> Guardar</button>
+          <button type="button" class="btn ghost" onclick="cerrarModalAjuste()"> Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Modal Crear Materia Prima -->
+  <div id="modal-crear-mp" class="modal hidden">
+    <div class="modal-content">
+      <h3 class="panel-title"> Nueva Materia Prima</h3>
+      <form id="form-crear-mp" class="form-stack">
+        <div class="form-group">
+          <label for="crear-nombre">Nombre</label>
+          <input type="text" id="crear-nombre" class="input-styled" required />
+        </div>
+
+        <div class="form-group">
+          <label for="crear-unidad">Unidad</label>
+          <input type="text" id="crear-unidad" class="input-styled" required />
+        </div>
+
+        <div class="form-group">
+          <label for="crear-minimo">Stock mínimo</label>
+          <input type="number" id="crear-minimo" class="input-styled" required />
+        </div>
+
+        <div class="form-group">
+          <label for="crear-stock">Stock inicial</label>
+          <input type="number" id="crear-stock" class="input-styled" value="0" required />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary"> Crear</button>
+          <button type="button" class="btn ghost" onclick="cerrarModalCrearMP()"> Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script src="/materias_primas/materias_primas.js"></script>
+</body>
+</html>
